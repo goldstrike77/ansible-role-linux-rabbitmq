@@ -1,0 +1,19 @@
+---
+- name: Creating RabbitMQ folder
+  file:
+    dest: '{{ rabbitmq_path }}/rabbitmq'
+    state: 'directory'
+    owner: 'rabbitmq'
+    group: 'rabbitmq'
+    mode: '0755'
+
+- name: RabbitMQ server configuration
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    backup: 'yes'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  loop: '{{ rabbitmq_conf_scripts }}'
+  register: rabbitmq_conf

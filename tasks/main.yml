@@ -1,2 +1,21 @@
 ---
-# tasks file for ansible-role-linux-rabbitmq
+- name: Include tasks for specific OS
+  include: '{{ ansible_os_family }}.yml'
+
+- name: Straight to getenforce selinux status
+  include: 'selinux.yml'
+
+- name: Include firewall tasks
+  include: 'firewall.yml'
+
+- name: Configuration the RabbitMQ
+  include: 'configureation.yml'
+
+- name: Reload the RabbitMQ service
+  shell: echo ''
+  notify: 'Ensure RabbitMQ service is enabled'
+  when:
+    - rabbitmq_conf is changed or rabbitmq_update is changed
+
+- name: Force the handler to run immediately
+  meta: flush_handlers

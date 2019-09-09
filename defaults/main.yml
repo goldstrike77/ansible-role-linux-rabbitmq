@@ -1,2 +1,9 @@
 ---
-# defaults file for ansible-role-linux-rabbitmq
+# General parameters #
+rabbitmq_is_install: false # A boolean value, whether install the RabbitMQ.
+rabbitmq_version: '3.7' # Specify the RabbitMQ version.
+rabbitmq_selinux: false # SELinux security policy.
+rabbitmq_path: '/data' # Specify the RabbitMQ data directory.
+
+# Listen port #
+rabbitmq_port: '5672' # RabbitMQ server listen.

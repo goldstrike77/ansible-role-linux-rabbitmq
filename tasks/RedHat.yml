@@ -1,0 +1,45 @@
+---
+- name: Include OS-specific variables
+  include_vars: '{{ ansible_os_family }}.yml'
+
+- name: Add Erlang YUM repositories
+  yum_repository:
+    name: '{{ erlang_repo_name }}'
+    description: '{{ erlang_repo_name }} YUM repository'
+    file: '{{ erlang_repo_name }}'
+    baseurl: '{{ erlang_repo_url }}'
+    gpgcheck: 'no'
+    timeout: '60'
+
+- name: Install the Erlang dependencies packages
+  yum:
+    name: '{{ erlang_packages }}'
+    state: 'present'
+    validate_certs: 'no'
+    disable_gpg_check: 'yes'
+    update_cache: 'yes'
+  register: yum_status
+  until: yum_status is succeeded
+  retries: 3
+  delay: 5
+
+- name: Add RabbitMQ YUM repositories
+  yum_repository:
+    name: '{{ rabbitmq_repo_name }}'
+    description: '{{ rabbitmq_repo_name }} YUM repository'
+    file: '{{ rabbitmq_repo_name }}'
+    baseurl: '{{ rabbitmq_repo_url }}'
+    gpgcheck: 'no'
+    timeout: '60'
+
+- name: Install the RabbitMQ packages
+  yum:
+    name: '{{ rabbitmq_packages }}'
+    state: 'present'
+    validate_certs: 'no'
+    disable_gpg_check: 'yes'
+    update_cache: 'yes'
+  register: rabbitmq_update
+  until: rabbitmq_update is succeeded
+  retries: 3
+  delay: 5

@@ -1,2 +1,4 @@
 ---
-# vars file for ansible-role-linux-rabbitmq
+rabbitmq_conf_scripts:
+  - { src: 'rabbitmq-server.service.j2', dest: '/lib/systemd/system/rabbitmq-server.service' }
+  - { src: 'rabbitmq.config.j2', dest: '/etc/rabbitmq/rabbitmq.config' }

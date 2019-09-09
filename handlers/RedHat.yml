@@ -1,0 +1,8 @@
+---
+- name: Enable RabbitMQ service
+  systemd:
+    name: 'rabbitmq-server.service'
+    enabled: 'yes'
+    state: 'restarted'
+    daemon_reload: 'yes'
+  listen: Ensure RabbitMQ service is enabled
