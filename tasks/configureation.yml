@@ -1,11 +1,11 @@
 ---
-- name: Creating RabbitMQ folder
+- name: Creating RabbitMQ base
   file:
-    dest: '{{ rabbitmq_path }}/rabbitmq'
+    dest: '{{ rabbitmq_path }}/rabbitmq/mnesia'
     state: 'directory'
     owner: 'rabbitmq'
     group: 'rabbitmq'
-    mode: '0755'
+    mode: '0750'
 
 - name: RabbitMQ server configuration
   template:

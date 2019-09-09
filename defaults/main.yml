@@ -6,4 +6,6 @@ rabbitmq_selinux: false # SELinux security policy.
 rabbitmq_path: '/data' # Specify the RabbitMQ data directory.
 
 # Listen port #
-rabbitmq_port: '5672' # RabbitMQ server listen.
+rabbitmq_port: # RabbitMQ server listen.
+  tcp: '5672'
+  ssl: '5671'

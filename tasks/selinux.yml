@@ -23,6 +23,7 @@
     proto: 'tcp'
     setype: 'http_port_t'
     state: 'present'
-  loop: '{{ rabbitmq_port }}'
+  with_dict:
+    - '{{ rabbitmq_port }}'
   when:
     - rabbitmq_selinux | bool
