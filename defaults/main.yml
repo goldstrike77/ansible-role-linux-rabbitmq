@@ -16,14 +16,14 @@ rabbitmq_port: # RabbitMQ server listen.
   tcp: '5672'
 
 # System Variables #
-rabbitmq_channel_max: '128' # Define the max permissible number of channels per connection.
-rabbitmq_frame_max: '131072' # Define the max permissible size of an AMQP frame in bytes.
-rabbitmq_handshake_timeout: '10000' # Maximum amount of time allowed for the handshake.
-rabbitmq_heartbeat: '60' # Heartbeat interval in seconds.
-rabbitmq_tcp_listen_options_backlog: '4096' # Connection Backlog.
-rabbitmq_vm_memory_high_watermark_absolute: '2GB' # Define an absolute limit of RAM used by the node.
-rabbitmq_vm_memory_high_watermark_paging_ratio: '0.5' # Configuring the Paging Threshold.
-rabbitmq_vm_memory_high_watermark_relative: '0.4' # Define the memory threshold at which the flow control is triggered can be adjusted.
+rabbitmq_channel_max: '128' # Define the max permissible number of channels per connection.
+rabbitmq_frame_max: '131072' # Define the max permissible size of an AMQP frame in bytes.
+rabbitmq_handshake_timeout: '10000' # Maximum amount of time allowed for the handshake.
+rabbitmq_heartbeat: '60' # Heartbeat interval in seconds.
+rabbitmq_tcp_listen_options_backlog: '4096' # Connection Backlog.
+rabbitmq_vm_memory_high_watermark_absolute: '2GB' # Define an absolute limit of RAM used by the node.
+rabbitmq_vm_memory_high_watermark_paging_ratio: '0.5' # Configuring the Paging Threshold.
+rabbitmq_vm_memory_high_watermark_relative: '0.4' # Define the memory threshold at which the flow control is triggered can be adjusted.
 
 # Business Variables #
 rabbitmq_bu_arg: # example only

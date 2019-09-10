@@ -1,4 +1,11 @@
 ---
+- name: Add monitoring user
+  rabbitmq_user:
+    user: 'monitoring'
+    password: "{{ lookup('password', '' + ansible_hostname + ':backup length=12 chars=ascii_letters,digits') }}"
+    tags: 'monitoring'
+    vhost: '/'
+
 - name: Add RabbitMQ prometheus exporter YUM repositories
   yum_repository:
     name: '{{ rabbitmq_exporter_repo_name }}'
@@ -18,3 +25,20 @@
   until: yum_status is succeeded
   retries: 3
   delay: 5
+
+- name: Prometheus RabbitMQ exporter configure file transfer
+  template:
+    src: 'rabbitmq_exporter.j2'
+    dest: '/etc/default/rabbitmq_exporter'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+  register: conf_update
+
+- name: RabbitMQ exporter service is enabled
+  systemd:
+    name: 'rabbitmq_exporter.service'
+    enabled: 'yes'
+    state: 'restarted'
+    daemon_reload: yes
+  when: conf_update is changed

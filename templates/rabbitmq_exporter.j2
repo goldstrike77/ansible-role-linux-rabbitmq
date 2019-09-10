@@ -1,0 +1,5 @@
+# see <https://github.com/kbudde/rabbitmq_exporter/issues/53>
+PUBLISH_PORT={{ rabbitmq_port.exporter }}
+RABBIT_URL=http://127.0.0.1:{{ rabbitmq_port.http }}
+RABBIT_USER=monitoring
+RABBIT_PASSWORD={{ lookup('password', '' + ansible_hostname + ':backup length=12 chars=ascii_letters,digits') }}
