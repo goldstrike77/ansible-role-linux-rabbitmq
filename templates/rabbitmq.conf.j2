@@ -44,7 +44,7 @@ listeners.ssl.default = {{ rabbitmq_port.ssl | default('5671') }}
 ## Maximum amount of time allowed for the AMQP 0-9-1 and AMQP 1.0 handshake
 ## (performed after socket connection and TLS handshake) to complete, in milliseconds.
 ##
-# handshake_timeout = 10000
+handshake_timeout = {{ rabbitmq_handshake_timeout }}
 
 ## Set to 'true' to perform reverse DNS lookups when accepting a
 ## connection. rabbitmqctl and management UI will then display hostnames
@@ -253,11 +253,11 @@ listeners.ssl.default = {{ rabbitmq_port.ssl | default('5671') }}
 ## * https://rabbitmq.com/heartbeats.html
 ## * https://rabbitmq.com/networking.html
 ##
-# heartbeat = 60
+heartbeat = {{ rabbitmq_heartbeat }}
 
 ## Set the max permissible size of an AMQP frame (in bytes).
 ##
-# frame_max = 131072
+frame_max = {{ rabbitmq_frame_max }}
 
 ## Set the max frame size the server will accept before connection
 ## tuning occurs
@@ -267,7 +267,7 @@ listeners.ssl.default = {{ rabbitmq_port.ssl | default('5671') }}
 ## Set the max permissible number of channels per connection.
 ## 0 means "no limit".
 ##
-# channel_max = 128
+channel_max = {{ rabbitmq_channel_max }}
 
 ## Customising TCP Listener (Socket) Configuration.
 ##
@@ -277,7 +277,7 @@ listeners.ssl.default = {{ rabbitmq_port.ssl | default('5671') }}
 ## * https://www.erlang.org/doc/man/inet.html#setopts-2
 ##
 
-# tcp_listen_options.backlog = 128
+tcp_listen_options.backlog = {{ rabbitmq_tcp_listen_options_backlog }}
 # tcp_listen_options.nodelay = true
 # tcp_listen_options.exit_on_close = false
 #
@@ -296,7 +296,7 @@ listeners.ssl.default = {{ rabbitmq_port.ssl | default('5671') }}
 
 ## Memory-based Flow Control threshold.
 ##
-# vm_memory_high_watermark.relative = 0.4
+vm_memory_high_watermark.relative = {{ rabbitmq_vm_memory_high_watermark_relative }}
 
 ## Alternatively, we can set a limit (in bytes) of RAM used by the node.
 ##
@@ -305,7 +305,7 @@ listeners.ssl.default = {{ rabbitmq_port.ssl | default('5671') }}
 ## Or you can set absolute value using memory units (with RabbitMQ 3.6.0+).
 ## Absolute watermark will be ignored if relative is defined!
 ##
-# vm_memory_high_watermark.absolute = 2GB
+vm_memory_high_watermark.absolute = {{ rabbitmq_vm_memory_high_watermark_absolute }}
 ##
 ## Supported unit symbols:
 ##
@@ -333,7 +333,7 @@ listeners.ssl.default = {{ rabbitmq_port.ssl | default('5671') }}
 ## persistent and transient) to disk as quickly
 ## as possible, see https://rabbitmq.com/lazy-queues.html.
 ##
-# vm_memory_high_watermark_paging_ratio = 0.5
+vm_memory_high_watermark_paging_ratio = {{ rabbitmq_vm_memory_high_watermark_paging_ratio }}
 
 ## Selects Erlang VM memory consumption calculation strategy. Can be `allocated`, `rss` or `legacy` (aliased as `erlang`),
 ## Introduced in 3.6.11. `rss` is the default as of 3.6.12.
