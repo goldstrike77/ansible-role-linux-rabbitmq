@@ -19,3 +19,20 @@
 
 - name: Force the handler to run immediately
   meta: flush_handlers
+
+- name: Include plugins tasks
+  include: 'plugins.yml'
+
+- name: Include authentication tasks
+  include: 'authentication.yml'
+  when: rabbitmq_bu_arg is defined
+
+- name: Install RabbitMQ prometheus exporter
+  include: 'exporter.yml'
+  when: exporter_is_install | bool
+
+- name: Registered with HashiCorp Consul
+  include: 'register.yml'
+  when:
+    - exporter_is_install | bool
+    - consul_public_register | bool

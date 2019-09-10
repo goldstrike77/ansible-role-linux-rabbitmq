@@ -1,0 +1,14 @@
+---
+- name: Add user to server and assign permissions on vhost.
+  rabbitmq_user:
+    user: '{{ item.user }}'
+    password: '{{ item.pass }}'
+    tags: '{{ item.tags }}'
+    permissions:
+      - vhost: '{{ item.vhost }}'
+        configure_priv: '{{ item.configure_priv }}'
+        read_priv: '{{ item.read_priv }}'
+        write_priv: '{{ item.write_priv }}'
+    state: 'present'
+    force: 'yes'
+  loop: '{{ rabbitmq_bu_arg }}'

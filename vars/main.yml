@@ -3,3 +3,6 @@ rabbitmq_conf_scripts:
   - { src: 'rabbitmq-server.service.j2', dest: '/lib/systemd/system/rabbitmq-server.service' }
   - { src: 'rabbitmq.conf.j2', dest: '/etc/rabbitmq/rabbitmq.conf' }
   - { src: 'rabbitmq-env.conf.j2', dest: '/etc/rabbitmq/rabbitmq-env.conf' }
+
+rabbitmq_plugins:
+  - 'rabbitmq_management'
