@@ -47,7 +47,6 @@ There are some variables in defaults/main.yml which can (Or needs to) be overrid
 ##### General parameters
 * `rabbitmq_is_install`: A boolean value, whether install the RabbitMQ.
 * `rabbitmq_version`: Specify the RabbitMQ version.
-* `rabbitmq_selinux`: SELinux security policy.
 * `rabbitmq_path`: Specify the RabbitMQ data directory.
 
 ##### System Variables
@@ -94,7 +93,6 @@ Including an example of how to use your role (for instance, with variables passe
 You can also use the group_vars or the host_vars files for setting the variables needed for this role. File you should change: group_vars/all or host_vars/`group_name`
 
     rabbitmq_version: '3.7'
-    rabbitmq_selinux: false
     rabbitmq_path: '/data'
     rabbitmq_port:
       epmd: '4369'

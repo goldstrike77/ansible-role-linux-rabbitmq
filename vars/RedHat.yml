@@ -8,6 +8,8 @@ erlang_packages:
 rabbitmq_repo_name: 'rabbitmq'
 rabbitmq_repo_url: 'http://dl.bintray.com/rabbitmq/rpm/rabbitmq-server/v{{ rabbitmq_version }}.x/el/{{ ansible_distribution_major_version }}/'
 rabbitmq_packages:
+  - 'policycoreutils-python'
+  - 'python2-pip.noarch'
   - 'rabbitmq-server'
 
 rabbitmq_exporter_repo_name: "prometheus"
