@@ -30,7 +30,7 @@ RabbitMQ is an open-source message-broker software (sometimes called message-ori
 
 ## Requirements
 ### Operating systems
-This Ansible role installs RabbitMQ on linux operating system, including establishing a filesystem structure and server configuration with some common operational features. Will works on the following operating systems:
+This Ansible role installs RabbitMQ on linux operating system, including establishing a filesystem structure and server configuration with some common operational features, Will works on the following operating systems:
 
   * CentOS 7
 
@@ -79,7 +79,8 @@ There are some variables in defaults/main.yml which can (Or needs to) be overrid
 There are some variables in vars/main.yml:
 
 ## Dependencies
-- Ansible versions > 2.8 are supported.
+- Ansible versions >= 2.8
+- Python >= 2.7.5
 
 ## Example
 
