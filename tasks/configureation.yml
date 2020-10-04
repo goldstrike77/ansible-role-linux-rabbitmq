@@ -1,5 +1,5 @@
 ---
-- name: Configure kernel parameters
+- name: Configure kernel parameters.
   sysctl:
     name: '{{ item.variable }}'
     value: '{{ item.value }}'
@@ -9,7 +9,7 @@
     sysctl_file: '/etc/sysctl.d/20-sysctl.conf'
   loop: "{{ rabbitmq_kernel_parameters|flatten(levels=1) }}"
 
-- name: Creating RabbitMQ base
+- name: Creating RabbitMQ base.
   file:
     dest: '{{ rabbitmq_path }}/rabbitmq/mnesia'
     state: 'directory'
@@ -17,13 +17,13 @@
     group: 'rabbitmq'
     mode: '0750'
 
-- name: RabbitMQ server configuration
+- name: RabbitMQ server configuration.
   template:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
     backup: 'yes'
-    owner: 'root'
-    group: 'root'
-    mode: '0644'
+    owner: '{{ item.owner }}'
+    group: '{{ item.group }}'
+    mode: '{{ item.mode }}'
   loop: '{{ rabbitmq_conf_scripts }}'
   register: rabbitmq_conf

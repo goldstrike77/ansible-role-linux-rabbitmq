@@ -3,6 +3,7 @@
   rabbitmq_user:
     user: '{{ item.user }}'
     password: '{{ item.pass }}'
+    node: 'rabbit@{{ ansible_fqdn | lower }}'
     tags: '{{ item.tags }}'
     permissions:
       - vhost: '{{ item.vhost }}'

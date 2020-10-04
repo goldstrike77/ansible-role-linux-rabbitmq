@@ -1,4 +1,5 @@
-- name: Enables the RabbitMQ plugins
+---
+- name: Enables the RabbitMQ plugins.
   rabbitmq_plugin:
     names: '{{ item }}'
     state: 'enabled'

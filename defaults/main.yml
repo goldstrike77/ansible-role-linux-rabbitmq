@@ -1,8 +1,10 @@
 ---
 # General parameters #
 rabbitmq_is_install: false # A boolean value, whether install the RabbitMQ.
-rabbitmq_version: '3.7' # Specify the RabbitMQ version.
+rabbitmq_version: '3.8' # Specify the RabbitMQ version.
 rabbitmq_path: '/data' # Specify the RabbitMQ data directory.
+rabbitmq_sa_user: 'admin' # Specify the RabbitMQ administrator name.
+rabbitmq_sa_pass: 'changeme' # Specify the RabbitMQ administrator password.
 
 # Listen port #
 rabbitmq_port: # RabbitMQ server listen.
@@ -10,6 +12,7 @@ rabbitmq_port: # RabbitMQ server listen.
   erlang_dist_client: '35672-35682'
   erlang_dist_server: '25672'
   exporter: '9419'
+  https: '15671'
   http: '15672'
   ssl: '5671'
   tcp: '5672'
@@ -25,23 +28,25 @@ rabbitmq_vm_memory_high_watermark_paging_ratio: '0.5' # Configuring the Pagin
 rabbitmq_vm_memory_high_watermark_relative: '0.4' # Define the memory threshold at which the flow control is triggered can be adjusted.
 
 # Business Variables #
-rabbitmq_bu_arg: # example only
-  - vhost: '/'
-    user: 'example'
-    pass: 'changeme'
-    read_priv: '.*'
-    write_priv: '.*'
-    configure_priv: '.*'
-    tags: 'example'
+#rabbitmq_bu_arg: # example only
+#  - vhost: '/'
+#    user: 'example'
+#    pass: 'changeme'
+#    read_priv: '.*'
+#    write_priv: '.*'
+#    configure_priv: '.*'
+#    tags: 'example'
 
 # Service Mesh #
 environments: 'Development' # Define the service environment.
+datacenter: 'dc01' # Define the DataCenter.
+domain: 'local' # Define the Domain.
 #tags: # Define the service custom label.
 #  subscription: 'default'
 #  owner: 'nobody'
 #  department: 'Infrastructure'
 #  organization: 'The Company'
-#  region: 'IDC01'
+#  region: 'China'
 exporter_is_install: false # Whether to install prometheus exporter.
 consul_public_register: false # Whether register a exporter service with public consul client.
 consul_public_exporter_token: '00000000-0000-0000-0000-000000000000' # Public Consul client ACL token.

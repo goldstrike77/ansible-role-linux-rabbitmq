@@ -1,0 +1,69 @@
+---
+- name: Install requirement python package.
+  pip:
+    name: '{{ rabbitmq_python_dependent_packages }}'
+    state: 'forcereinstall'
+    extra_args: '--default-timeout=120 --ignore-installed -i https://{{ rabbitmq_pypi_url }}/simple --trusted-host {{ rabbitmq_pypi_url }}'
+  register: rabbitmq_python_status
+  until: rabbitmq_python_status is succeeded
+  retries: 5
+  delay: 2
+
+- name: Check private key exists.
+  stat:
+    path: '{{ rabbitmq_cert_path }}/server.key'
+  register: check_cert_keys
+
+- name: Certificate Signing operation.
+  block:
+    - name: Creating Certificate folder.
+      file:
+        dest: '{{ rabbitmq_cert_path }}'
+        state: 'directory'
+        owner: 'rabbitmq'
+        mode: '1750'
+    - name: Selfsigned CA file transfer.
+      copy:
+        src: 'ssl/{{ item }}'
+        dest: '{{ rabbitmq_cert_path }}/{{ item }}'
+        owner: 'rabbitmq'
+        mode: '640'
+      loop:
+        - 'ca-cert.pem'
+        - 'ca-key.pem'
+    - name: Generate an OpenSSL private key.
+      openssl_privatekey:
+        path: '{{ rabbitmq_cert_path }}/server.key'
+        select_crypto_backend: 'cryptography'
+        size: '4096'
+        type: 'RSA'
+        owner: 'rabbitmq'
+        mode: '0640'
+        state: 'present'
+    - name: Generate an OpenSSL Certificate Signing Request.
+      openssl_csr:
+        path: '{{ rabbitmq_cert_path }}/server.csr'
+        privatekey_path: '{{ rabbitmq_cert_path }}/server.key'
+        select_crypto_backend: 'cryptography'
+        common_name: 'Server'
+        subject_alt_name:
+          - 'DNS:{{ ansible_hostname }}'
+          - 'DNS:{{ ansible_fqdn }}'
+          - 'DNS:{{ group_names[-1] | upper | regex_replace("_", "-") }}-{{ environments | upper | regex_replace("_", "-") }}-rabbitmq.service.{{ datacenter | lower }}.{{ domain | lower }}'
+          - 'IP:{{ ansible_default_ipv4.address }}'
+        owner: 'rabbitmq'
+        mode: '0640'
+        state: 'present'
+    - name: Generate an OpenSSL certificate signed with your own CA certificate.
+      openssl_certificate:
+        path: '{{ rabbitmq_cert_path }}/server.crt'
+        csr_path: '{{ rabbitmq_cert_path }}/server.csr'
+        ownca_path: '{{ rabbitmq_cert_path }}/ca-cert.pem'
+        ownca_privatekey_path: '{{ rabbitmq_cert_path }}/ca-key.pem'
+        select_crypto_backend: 'cryptography'
+        ownca_not_after: '+7305d'
+        provider: 'ownca'
+        owner: 'rabbitmq'
+        mode: '0640'
+        state: 'present'
+  when: not check_cert_keys.stat.exists or check_cert_keys.stat.size == 0

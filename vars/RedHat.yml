@@ -1,18 +1,20 @@
 ---
-erlang_repo_name: 'erlang'
-erlang_repo_url: 'http://packages.erlang-solutions.com/rpm/centos/$releasever/$basearch'
-erlang_packages:
-  - 'erlang'
-  - 'epel-release'
+rabbitmq_epel_repo_name: 'epel'
+rabbitmq_epel_repo_url: 'http://mirrors.tuna.tsinghua.edu.cn/epel/$releasever/$basearch/'
+
+rabbitmq_erlang_repo_name: 'erlang'
+rabbitmq_erlang_repo_url: 'http://packages.erlang-solutions.com/rpm/centos/$releasever/$basearch/'
 
 rabbitmq_repo_name: 'rabbitmq'
-rabbitmq_repo_url: 'http://dl.bintray.com/rabbitmq/rpm/rabbitmq-server/v{{ rabbitmq_version }}.x/el/{{ ansible_distribution_major_version }}/'
+rabbitmq_repo_url: 'http://dl.bintray.com/rabbitmq/rpm/rabbitmq-server/v{{ rabbitmq_version }}.x/el/$releasever/'
+
 rabbitmq_packages:
+  - 'erlang'
   - 'policycoreutils-python'
-  - 'python2-pip.noarch'
+  - 'python-pip'
   - 'rabbitmq-server'
 
-rabbitmq_exporter_repo_name: "prometheus"
-rabbitmq_exporter_repo_url: "http://cache.omygods.com/prometheus-rpm/release/el/{{ansible_distribution_version.split('.')[0]}}/$basearch"
+rabbitmq_exporter_repo_name: 'prometheus'
+rabbitmq_exporter_repo_url: 'http://cache.omygods.com/prometheus-rpm/release/el/$releasever/$basearch/'
 rabbitmq_exporter_packages:
   - 'rabbitmq_exporter'

@@ -26,11 +26,11 @@ __Table of Contents__
 - [Contributors](#Contributors)
 
 ## Overview
-This Ansible role installs RabbitMQ on linux operating system, including establishing a filesystem structure and server configuration with some common operational features.
+RabbitMQ is an open-source message-broker software (sometimes called message-oriented middleware) that originally implemented the Advanced Message Queuing Protocol (AMQP) and has since been extended with a plug-in architecture to support Streaming Text Oriented Messaging Protocol (STOMP), MQ Telemetry Transport (MQTT), and other protocols.
 
 ## Requirements
 ### Operating systems
-This role will work on the following operating systems:
+This Ansible role installs RabbitMQ on linux operating system, including establishing a filesystem structure and server configuration with some common operational features. Will works on the following operating systems:
 
   * CentOS 7
 
@@ -45,9 +45,13 @@ The following list of supported the RabbitMQ releases:
 There are some variables in defaults/main.yml which can (Or needs to) be overridden:
 
 ##### General parameters
-* `rabbitmq_is_install`: A boolean value, whether install the RabbitMQ.
 * `rabbitmq_version`: Specify the RabbitMQ version.
 * `rabbitmq_path`: Specify the RabbitMQ data directory.
+* `rabbitmq_sa_user`: Specify the RabbitMQ administrator name.
+* `rabbitmq_sa_pass`: Specify the RabbitMQ administrator password.
+
+##### Listen port
+* `rabbitmq_port`: RabbitMQ server listen.
 
 ##### System Variables
 * `rabbitmq_channel_max`: Define the max permissible number of channels per connection.
@@ -61,9 +65,11 @@ There are some variables in defaults/main.yml which can (Or needs to) be overrid
 
 ##### Service Mesh
 * `environments`: Define the service environment.
+* `datacenter`: Define the DataCenter.
+* `domain`: Define the Domain.
 * `tags`: Define the service custom label.
 * `exporter_is_install`: Whether to install prometheus exporter.
-* `consul_public_register`: false Whether register a exporter service with public consul client.
+* `consul_public_register`: Whether register a exporter service with public consul client.
 * `consul_public_exporter_token`: Public Consul client ACL token.
 * `consul_public_http_prot`: The consul Hypertext Transfer Protocol.
 * `consul_public_clients`: List of public consul clients.
@@ -80,59 +86,68 @@ There are some variables in vars/main.yml:
 ### Hosts inventory file
 See tests/inventory for an example.
 
-    node01 ansible_host='192.168.1.10' rabbitmq_version='3.7'
+    node01 ansible_host='192.168.1.10' rabbitmq_version='3.8'
 
 ### Vars in role configuration
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: all
-      roles:
-         - role: ansible-role-linux-rabbitmq
-           rabbitmq_version: '3.7'
+```yaml
+- hosts: all
+  roles:
+     - role: ansible-role-linux-rabbitmq
+       rabbitmq_version: '3.8'
+```
 
 ### Combination of group vars and playbook
-You can also use the group_vars or the host_vars files for setting the variables needed for this role. File you should change: group_vars/all or host_vars/`group_name`
+You can also use the group_vars or the host_vars files for setting the variables needed for this role. File you should change: group_vars/all or host_vars/`group_name`.
 
-    rabbitmq_version: '3.7'
-    rabbitmq_path: '/data'
-    rabbitmq_port:
-      epmd: '4369'
-      erlang_dist_client: '35672-35682'
-      erlang_dist_server: '25672'
-      exporter: '9419'
-      http: '15672'
-      ssl: '5671'
-      tcp: '5672'
-    rabbitmq_channel_max: '128'
-    rabbitmq_frame_max: '131072'
-    rabbitmq_handshake_timeout: '10000'
-    rabbitmq_heartbeat: '60'
-    rabbitmq_tcp_listen_options_backlog: '4096'
-    rabbitmq_vm_memory_high_watermark_absolute: '2GB'
-    rabbitmq_vm_memory_high_watermark_paging_ratio: '0.5'
-    rabbitmq_vm_memory_high_watermark_relative: '0.4'
-    rabbitmq_bu_arg:
-      - vhost: '/'
-        user: 'example'
-        pass: 'changeme'
-        read_priv: '.*'
-        write_priv: '.*'
-        configure_priv: '.*'
-        tags: 'example'
-    environments: 'Development'
-    tags:
-      subscription: 'default'
-      owner: 'nobody'
-      department: 'Infrastructure'
-      organization: 'The Company'
-      region: 'IDC01'
-    exporter_is_install: false
-    consul_public_register: false
-    consul_public_exporter_token: '00000000-0000-0000-0000-000000000000'
-    consul_public_http_prot: 'https'
-    consul_public_http_port: '8500'
-    consul_public_clients:
-      - '127.0.0.1'
+```yaml
+rabbitmq_version: '3.8'
+rabbitmq_path: '/data'
+rabbitmq_sa_user: 'admin'
+rabbitmq_sa_pass: 'changeme'
+rabbitmq_port:
+  epmd: '4369'
+  erlang_dist_client: '35672-35682'
+  erlang_dist_server: '25672'
+  exporter: '9419'
+  https: '15671'
+  http: '15672'
+  ssl: '5671'
+  tcp: '5672'
+rabbitmq_channel_max: '128'
+rabbitmq_frame_max: '131072'
+rabbitmq_handshake_timeout: '10000'
+rabbitmq_heartbeat: '60'
+rabbitmq_tcp_listen_options_backlog: '4096'
+rabbitmq_vm_memory_high_watermark_absolute: '2GB'
+rabbitmq_vm_memory_high_watermark_paging_ratio: '0.5'
+rabbitmq_vm_memory_high_watermark_relative: '0.4'
+rabbitmq_bu_arg:
+  - vhost: '/'
+    user: 'example'
+    pass: 'changeme'
+    read_priv: '.*'
+    write_priv: '.*'
+    configure_priv: '.*'
+    tags: 'example'
+environments: 'Development'
+datacenter: 'dc01'
+domain: 'local'
+tags:
+  subscription: 'default'
+  owner: 'nobody'
+  department: 'Infrastructure'
+  organization: 'The Company'
+  region: 'China'
+exporter_is_install: false
+consul_public_register: false
+consul_public_exporter_token: '00000000-0000-0000-0000-000000000000'
+consul_public_http_prot: 'https'
+consul_public_http_port: '8500'
+consul_public_clients:
+  - '127.0.0.1'
+```
 
 ## License
 ![](https://img.shields.io/badge/MIT-purple.svg?style=for-the-badge)

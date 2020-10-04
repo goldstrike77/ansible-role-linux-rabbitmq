@@ -1,0 +1,29 @@
+---
+- name: Ensure hostname resolution in local host files.
+  lineinfile:
+    dest: '/etc/hosts'
+    line: "{{ hostvars[item]['ansible_default_ipv4']['address'] }}	{{ hostvars[item]['ansible_fqdn'] | lower }}"
+  loop: '{{ groups[group_names[-1]] }}'
+
+- name: RabbitMQ memeber join operation.
+  block:
+    - name: Stopping RabbitMQ node.
+      shell: 'rabbitmqctl stop_app'
+    - name: Add node to RabbitMQ cluster.
+      shell: 'rabbitmqctl join_cluster rabbit@{{ rabbitmq_servers[0] | lower }}'
+      ignore_errors: True
+    - name: Starting RabbitMQ node.
+      shell: 'rabbitmqctl start_app'
+  when: rabbitmq_servers[0] not in ansible_fqdn
+
+- name: Ensure all queues have the HA policy.
+  rabbitmq_policy:
+    name: 'High-Availability'
+    pattern: '.*'
+    apply_to: 'all'
+    priority: '0'
+    node: 'rabbit@{{ ansible_fqdn | lower }}'
+  args:
+    tags:
+      ha-mode: 'all'
+      ha-sync-mode: 'automatic'

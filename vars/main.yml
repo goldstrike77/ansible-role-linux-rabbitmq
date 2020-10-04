@@ -1,8 +1,18 @@
 ---
+rabbitmq_servers: "\
+  {% set _rabbitmq_servers = [] %}\
+  {% for host in groups[group_names[-1]] %}\
+    {% if ( rabbitmq_is_install ) %}\
+      {% if _rabbitmq_servers.append(hostvars[host]['ansible_fqdn']) %}{% endif %}\
+    {% endif %}\
+  {% endfor %}\
+  {{ _rabbitmq_servers }}"
+
 rabbitmq_conf_scripts:
-  - { src: 'rabbitmq-server.service.j2', dest: '/lib/systemd/system/rabbitmq-server.service' }
-  - { src: 'rabbitmq.conf.j2', dest: '/etc/rabbitmq/rabbitmq.conf' }
-  - { src: 'rabbitmq-env.conf.j2', dest: '/etc/rabbitmq/rabbitmq-env.conf' }
+  - { src: 'rabbitmq-server.service.j2', dest: '/lib/systemd/system/rabbitmq-server.service', owner: 'root', group: 'root', mode: '644' }
+  - { src: 'rabbitmq.conf.j2', dest: '/etc/rabbitmq/rabbitmq.conf', owner: 'rabbitmq', group: 'rabbitmq', mode: '644' }
+  - { src: 'rabbitmq-env.conf.j2', dest: '/etc/rabbitmq/rabbitmq-env.conf', owner: 'rabbitmq', group: 'rabbitmq', mode: '644' }
+  - { src: 'erlang.cookie.j2', dest: '/var/lib/rabbitmq/.erlang.cookie', owner: 'rabbitmq', group: 'rabbitmq', mode: '400' }
 
 rabbitmq_plugins:
   - 'rabbitmq_management'
@@ -16,3 +26,11 @@ rabbitmq_kernel_parameters:
   - { variable: 'net.ipv4.tcp_fin_timeout', value: '10' }
   - { variable: 'net.core.rmem_max', value: '2097152' }
   - { variable: 'net.core.wmem_max', value: '2097152' }
+
+rabbitmq_cert_path: '/etc/rabbitmq/ssl'
+
+rabbitmq_pypi_url: 'pypi.tuna.tsinghua.edu.cn'
+
+rabbitmq_python_dependent_packages:
+  - 'pip'
+  - 'cryptography'

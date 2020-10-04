@@ -1,5 +1,5 @@
 ---
-- name: Enable RabbitMQ service
+- name: Enable RabbitMQ service.
   systemd:
     name: 'rabbitmq-server.service'
     enabled: 'yes'
