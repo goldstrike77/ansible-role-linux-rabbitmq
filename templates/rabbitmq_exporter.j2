@@ -4,4 +4,4 @@ PUBLISH_PORT={{ rabbitmq_port.exporter }}
 RABBIT_URL=https://{{ ansible_default_ipv4.address }}:{{ rabbitmq_port.https }}
 SKIPVERIFY=true
 RABBIT_USER=monitoring
-RABBIT_PASSWORD={{ lookup('password', '' + ansible_hostname + ':monitor length=12 chars=ascii_letters,digits') }}
+RABBIT_PASSWORD={{ lookup('password', '' + group_names[-1] + ':monitor length=12 chars=ascii_letters,digits') }}

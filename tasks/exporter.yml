@@ -2,7 +2,7 @@
 - name: Add monitoring user.
   rabbitmq_user:
     user: 'monitoring'
-    password: "{{ lookup('password', '' + ansible_hostname + ':monitor length=12 chars=ascii_letters,digits') }}"
+    password: "{{ lookup('password', '' + group_names[-1] + ':monitor length=12 chars=ascii_letters,digits') }}"
     node: 'rabbit@{{ ansible_fqdn | lower }}'
     tags: 'monitoring'
     vhost: '/'
@@ -42,5 +42,5 @@
     name: 'rabbitmq_exporter.service'
     enabled: 'yes'
     state: 'restarted'
-    daemon_reload: yes
+    daemon_reload: 'yes'
   when: conf_update is changed
