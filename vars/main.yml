@@ -32,5 +32,5 @@ rabbitmq_cert_path: '/etc/rabbitmq/ssl'
 rabbitmq_pypi_url: 'pypi.tuna.tsinghua.edu.cn'
 
 rabbitmq_python_dependent_packages:
-  - 'pip'
+  - 'pip==20.3.4'
   - 'cryptography'
